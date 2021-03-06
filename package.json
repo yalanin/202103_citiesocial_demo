@@ -5,11 +5,13 @@
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.3.0",
+    "bulma": "^0.9.2",
     "stimulus": "^2.0.0",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "webpack-dev-server": "^3.11.2"
   }
 }
