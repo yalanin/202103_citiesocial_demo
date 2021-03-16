@@ -28,6 +28,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # gem 'devise', '~> 4.7', '>= 4.7.3'
 gem 'devise', github: 'heartcombo/devise', branch: 'ca-omniauth-2'
 gem 'omniauth-google-oauth2', '~> 0.8.1'
+gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'figaro', '~> 1.2'
 
 group :development, :test do
