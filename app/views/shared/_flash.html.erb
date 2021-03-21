@@ -1,4 +1,15 @@
-<div class="notification is-success is-light is-margin-less">
-  <button class="delete"></button>
-  <i class="far fa-comment"></i> <%= notice %>
-</div>
+<% if flash[:notice] %>
+  <div class="notification is-success is-light is-margin-less">
+    <button class="delete"></button>
+    <i class="far fa-comment"></i> <%= notice %>
+  </div>
+<% end %>
+
+<% if flash[:error] %>
+  <% flash[:error].each do |msg| %>
+    <div class="notification is-danger is-light is-margin-less">
+      <button class="delete"></button>
+      <i class="far fa-comment"></i> <%= msg %>
+    </div>
+  <% end %>
+<% end %>
