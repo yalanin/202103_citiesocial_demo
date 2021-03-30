@@ -24,7 +24,7 @@ class Admin::ProductsController < Admin::BaseController
 
   def update
     if @product.update(product_params)
-      redirect_to edit_admin_product_path(@product)
+      redirect_to edit_admin_product_path(@product), notice: '商品已更新'
     else
       flash[:error] = @product.errors.full_messages
       redirect_to edit_admin_product_path(@product)
@@ -43,6 +43,6 @@ class Admin::ProductsController < Admin::BaseController
   end
 
   def product_params
-    params.require(:product).permit(:name, :vendor_id, :list_price, :sell_price, :on_sell)
+    params.require(:product).permit(:name, :vendor_id, :list_price, :sell_price, :on_sell, :description)
   end
 end
