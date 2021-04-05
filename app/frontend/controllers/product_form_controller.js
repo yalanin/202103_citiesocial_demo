@@ -10,6 +10,16 @@ export default class extends Controller {
     this.linkTarget.insertAdjacentHTML('beforebegin', content);
   }
 
-  connect() {
+  remove_sku(event) {
+    event.preventDefault();
+
+    let record = event.target.closest('.nested-fields');
+    console.log(record);
+    if(record.dataset.newRecord == 'true') {
+      record.remove();
+    }else {
+      record.querySelector("input[name*='_destroy']").value = 1;
+      record.style.display = 'none';
+    }
   }
 }
