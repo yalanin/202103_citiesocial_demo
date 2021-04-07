@@ -1,0 +1,26 @@
+<h1 class='title margin-top'>商品分類列表</h1>
+<%= link_to '新增分類', new_admin_category_path, class: 'button is-primary is-small' %>
+<br />
+<br />
+
+<table class="table is-fullwidth has-shadowed">
+  <thead>
+    <tr>
+      <th>名稱</th>
+      <th>更新時間</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @categories.each do |category| %>
+    <tr>
+      <td><%= link_to category.name, edit_admin_category_path(category) %></td>
+      <td><%= category.updated_at %></td>
+      <td>
+        <%= link_to "編輯", edit_admin_category_path(category), class: 'button is-light is-small' %>
+        <%= link_to "刪除", admin_category_path(category), method: :delete, data: {confirm: '確認刪除?!'}, class: 'button is-danger is-small' %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
