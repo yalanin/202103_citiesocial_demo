@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
   include CodeGenerator
 
+  # default_scope { where(on_sell: true) }
+
   validates :name, presence: true
   validates :list_price, :sell_price, presence: true, numericality: { greater_than: 0, allow_nil: true }
   validates :code, uniqueness: true
