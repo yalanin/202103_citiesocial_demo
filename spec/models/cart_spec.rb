@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.describe Cart, type: :model do
   describe '基本功能' do
     let(:cart) { Cart.new }
-    let(:vendor) { Vendor.create(title: 'vendor_spec') }
-    let(:product) { Product.create(name: 'product_1', list_price: '100', sell_price: '50', vendor_id: vendor.id) }
+    # let(:vendor) { FactoryBot.build(:vendor) }
+    # let(:category) { FactoryBot.build(:category) }
+    let(:product) { FactoryBot.create(:product) }
 
     it '商品丟進購物車' do
       cart.add_item(2)
