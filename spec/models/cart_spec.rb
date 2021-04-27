@@ -5,7 +5,7 @@ RSpec.describe Cart, type: :model do
     let(:cart) { Cart.new }
     # let(:vendor) { FactoryBot.build(:vendor) }
     # let(:category) { FactoryBot.build(:category) }
-    let(:product) { FactoryBot.create(:product) }
+    let(:product) { create(:product) }
 
     it '商品丟進購物車' do
       cart.add_item(2)
