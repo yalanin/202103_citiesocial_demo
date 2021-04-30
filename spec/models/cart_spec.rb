@@ -34,5 +34,22 @@ RSpec.describe Cart, type: :model do
   end
 
   describe '進階功能' do
+    let(:cart) { Cart.new }
+    let(:product1) { create(:product) }
+    let(:product2) { create(:product) }
+
+    it '將購物車功能存入 session' do
+      3.times { cart.add_item(product1.id) }
+      2.times { cart.add_item(product2.id) }
+
+      cart_hash = {
+        'items' => [
+          { 'product_id' => product1.id, 'quantity' => 3 },
+          { 'product_id' => product2.id, 'quantity' => 2 }
+        ]
+      }
+
+      expect(cart.serialize).to eq cart_hash
+    end
   end
 end
