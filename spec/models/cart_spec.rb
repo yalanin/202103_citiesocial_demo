@@ -1,17 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Cart, type: :model do
-  describe '基本功能' do
-    let(:cart) { Cart.new }
-    # let(:vendor) { FactoryBot.build(:vendor) }
-    # let(:category) { FactoryBot.build(:category) }
-    let(:product) { create(:product) }
-    let(:product1) { create(:product, sell_price: 5) }
-    let(:product2) { create(:product, sell_price: 10) }
+  let(:cart) { Cart.new }
+  # let(:vendor) { FactoryBot.build(:vendor) }
+  # let(:category) { FactoryBot.build(:category) }
+  let(:product) { create(:product) }
+  let(:product1) { create(:product, sell_price: 5) }
+  let(:product2) { create(:product, sell_price: 10) }
 
+  describe '基本功能' do
     it '商品丟進購物車' do
       cart.add_item(2)
-      expect(cart.empty?).to be false
+      expect(cart).not_to be_empty
     end
 
     it '相同商品增加數量、不增加項目' do
@@ -34,10 +34,6 @@ RSpec.describe Cart, type: :model do
   end
 
   describe '進階功能' do
-    let(:cart) { Cart.new }
-    let(:product1) { create(:product) }
-    let(:product2) { create(:product) }
-
     it '將購物車功能存入 session' do
       3.times { cart.add_item(product1.id) }
       2.times { cart.add_item(product2.id) }
