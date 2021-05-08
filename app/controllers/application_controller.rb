@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   before_action :view_categories, unless: :backend?
+  helper_method :current_cart
 
   private
 
@@ -14,5 +15,9 @@ class ApplicationController < ActionController::Base
 
   def backend?
     controller_path.split('/').first == 'Admin'
+  end
+
+  def current_cart
+    @current_cart ||= Cart.from_hash(session[:cart_9876])
   end
 end
