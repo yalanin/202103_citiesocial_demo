@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 import Rails from "@rails/ujs";
 
 export default class extends Controller {
-  static targets = [ 'quantity', 'sku', 'addToCartBtn' ]
+  static targets = ['quantity', 'sku', 'addToCartBtn']
 
   add_to_cart(e){
     e.preventDefault();
@@ -24,10 +24,17 @@ export default class extends Controller {
         type: 'POST',
         dataType: 'json',
         success: (response) => {
-          console.log(response);
+          if(response.status == 'ok'){
+            let item_count = response.items || 0;
+            let event = new CustomEvent('addToCart', { 'detail': { item_count } });
+            document.dispatchEvent(event);
+          }
         },
         error: function(err){
           console.log(err);
+        },
+        complete: () => {
+          this.addToCartBtnTarget.classList.remove('is-loading');
         }
       })
     }

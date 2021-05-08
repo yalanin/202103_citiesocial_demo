@@ -29,6 +29,12 @@
       <div class="navbar-item">
         <div class="buttons">
           <% if user_signed_in? %>
+            <div class="navbar-item" data-controller="cart">
+              <i class="fas fa-shopping-cart"></i>
+              <span data-action="addToCart@document->cart#updateCart" data-cart-target="count">
+                (<%= current_cart.items.count %>)
+              </span>
+            </div>
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">
                 <i class="fas fa-user"></i>&nbsp;<%= current_user.email %>
