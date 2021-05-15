@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     get :checkout, on: :collection
   end
 
+  resources :orders, except: %i[new edit update destroy]
+
   namespace :admin do
     root 'products#index'
     resources :products, except: [:show]
