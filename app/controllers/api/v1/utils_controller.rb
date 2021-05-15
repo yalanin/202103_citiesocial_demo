@@ -11,9 +11,10 @@ class Api::V1::UtilsController < ApplicationController
   end
 
   def cart
-    product = Product.friendly.find(params[:id])
+    product = Product.joins(skus).find_by(skus: { id: params[:sku] }) if params[:sku].present?
+    product ||= Product.friendly.find(params[:id])
     if product
-      current_cart.add_item(product.code, params[:quantity].to_i)
+      current_cart.add_sku(product.code, params[:quantity].to_i, params[:sku])
       session[:cart_9876] = current_cart.serialize
       render json: { status: 'ok', items: current_cart.items.count }
     else

@@ -4,7 +4,11 @@ class OrdersController < ApplicationController
   def create
     @order = current_user.orders.new(order_params)
     current_cart.items.each do |item|
-      @order.order_items.build(sku: 0, quantity: item.quantity)
+      if item.sku_id.present?
+        @order.order_items.build(sku: item.sku_id, quantity: item.quantity, product_id: item.product.id)
+      else
+        @order.order_items.build(quantity: item.quantity, product_id: item.product.id)
+      end
     end
 
     if @order.save

@@ -14,7 +14,6 @@ export default class extends Controller {
     event.preventDefault();
 
     let record = event.target.closest('.nested-fields');
-    console.log(record);
     if(record.dataset.newRecord == 'true') {
       record.remove();
     }else {

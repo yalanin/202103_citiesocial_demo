@@ -6,5 +6,12 @@ FactoryBot.define do
     on_sell { false }
     vendor
     category
+
+    trait :with_skus do
+      transient do
+        amount { 2 }
+      end
+      skus { build_list :sku, amount }
+    end
   end
 end
