@@ -12,3 +12,6 @@
 
 google_app_id: 'YOUR-APP-ID'
 google_app_secret: 'YOUR-APP-SECRET'
+
+line_pay_channel_id: 'YOUR-LINE-PAY-CHANNEL-ID'
+line_pay_channel_key: 'YOUR-LINE-PAY-CHANNEL-KEY'
