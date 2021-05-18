@@ -15,3 +15,4 @@ google_app_secret: 'YOUR-APP-SECRET'
 
 line_pay_channel_id: 'YOUR-LINE-PAY-CHANNEL-ID'
 line_pay_channel_key: 'YOUR-LINE-PAY-CHANNEL-KEY'
+line_pay_domain: 'LINE-PAY-DOMAIN'

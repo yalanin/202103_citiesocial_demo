@@ -12,6 +12,12 @@ class OrdersController < ApplicationController
     end
 
     if @order.save
+      response = Faraday.post("#{ENV['line_pay_domain']}/v2/payments/request") do |req|
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
+        req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_key']
+        req.body = pay_params
+      end
       redirect_to root_path, notice: '訂單儲存完成'
     else
       render 'carts/checkout'
@@ -22,5 +28,15 @@ class OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(:recipient, :tel, :address, :note)
+  end
+
+  def pay_params
+    {
+      productName: 'Citiesocial Demo Pay Test',
+      amount: current_cart.total_price.to_i,
+      currency: TWD,
+      confirmUrl: 'http://localhost:3000/orders/confirm',
+      orderId: @order.order_number
+    }.to_json
   end
 end
