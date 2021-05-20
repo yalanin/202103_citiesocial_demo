@@ -13,3 +13,10 @@
     </div>
   <% end %>
 <% end %>
+
+<% if flash[:alert] %>
+  <div class="notification is-danger is-light is-margin-less">
+    <button class="delete"></button>
+    <i class="far fa-comment"></i> <%= alert %>
+  </div>
+<% end %>

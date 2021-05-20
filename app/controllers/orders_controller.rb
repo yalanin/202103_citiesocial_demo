@@ -18,7 +18,15 @@ class OrdersController < ApplicationController
         req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_key']
         req.body = pay_params
       end
-      redirect_to root_path, notice: '訂單儲存完成'
+
+      result = JSON.parse(response.body)
+      if(result['returnCode'] == '0000')
+        payment_url = result['info']['paymentUrl']['web']
+        redirect_to payment_url
+      else
+        flash[:alert] = result['returnMessage']
+        redirect_to checkout_cart_path
+      end
     else
       render 'carts/checkout'
     end
@@ -34,7 +42,7 @@ class OrdersController < ApplicationController
     {
       productName: 'Citiesocial Demo Pay Test',
       amount: current_cart.total_price.to_i,
-      currency: TWD,
+      currency: 'TWD',
       confirmUrl: 'http://localhost:3000/orders/confirm',
       orderId: @order.order_number
     }.to_json
