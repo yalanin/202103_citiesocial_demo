@@ -8,7 +8,9 @@ Rails.application.routes.draw do
     get :checkout, on: :collection
   end
 
-  resources :orders, except: %i[new edit update destroy]
+  resources :orders, except: %i[new edit update destroy] do
+    get :confirm, on: :collection
+  end
 
   namespace :admin do
     root 'products#index'

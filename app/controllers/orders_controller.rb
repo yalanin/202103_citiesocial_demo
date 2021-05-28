@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
       end
 
       result = JSON.parse(response.body)
-      if(result['returnCode'] == '0000')
+      if result['returnCode'] == '0000'
         payment_url = result['info']['paymentUrl']['web']
         redirect_to payment_url
       else
@@ -29,6 +29,22 @@ class OrdersController < ApplicationController
       end
     else
       render 'carts/checkout'
+    end
+  end
+
+  def confirm
+    response = Faraday.post("#{ENV['line_pay_domain']}/v2/payments/#{params[:transactionId]}/confirm") do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
+      req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_key']
+      req.body = confirm_params
+    end
+
+    result = JSON.parse(response.body)
+    if result['returnCode'] == '0000'
+      redirect_to root_path, alert: '付款完成'
+    else
+      redirect_to root_path, alert: '發生錯誤，請聯繫系統人員'
     end
   end
 
@@ -45,6 +61,13 @@ class OrdersController < ApplicationController
       currency: 'TWD',
       confirmUrl: 'http://localhost:3000/orders/confirm',
       orderId: @order.order_number
+    }.to_json
+  end
+
+  def confirm_params
+    {
+      amount: current_cart.total_price.to_i,
+      currency: 'TWD'
     }.to_json
   end
 end
