@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   end
 
   resources :orders, except: %i[new edit update destroy] do
+    delete :cancel, on: :member
     get :confirm, on: :collection
   end
 

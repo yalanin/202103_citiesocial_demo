@@ -1,6 +1,10 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    @orders = current_user.orders.order(id: :desc)
+  end
+
   def create
     @order = current_user.orders.new(order_params)
     current_cart.items.each do |item|
@@ -50,6 +54,30 @@ class OrdersController < ApplicationController
       redirect_to root_path, notice: '付款完成'
     else
       redirect_to root_path, alert: '發生錯誤，請聯繫系統人員'
+    end
+  end
+
+  def cancel
+    @order = current_user.orders.find(params[:id])
+
+    if @order.paid?
+      response = Faraday.post("#{ENV['line_pay_domain']}/v2/payments/#{@order.transaction_id}/refund") do |req|
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
+        req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_key']
+      end
+
+      result = JSON.parse(response.body)
+      if result['returnCode'] == '0000'
+        @order.cancel!
+        redirect_to orders_path, notice: "訂單 #{@order.order_number} 已取消"
+      else
+        flash[:alert] = result['returnMessage']
+        redirect_to orders_path
+      end
+    else
+      @order.cancel!
+      redirect_to orders_path, notice: "訂單 #{@order.order_number} 已取消"
     end
   end
 
