@@ -9,7 +9,11 @@ export default class extends Controller {
 
     let product_id = this.data.get('id');
     let quantity = this.quantityTarget.value;
-    let sku = this.skuTarget.textContent;
+    let sku = this.skuTarget.value;
+
+    if(sku == undefined) {
+      sku = this.skuTarget.textContent;
+    }
 
     if(quantity > 0){
       this.addToCartBtnTarget.classList.add('is-loading');

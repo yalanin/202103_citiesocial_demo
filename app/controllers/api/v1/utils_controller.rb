@@ -11,7 +11,7 @@ class Api::V1::UtilsController < ApplicationController
   end
 
   def cart
-    product = Product.joins(skus).find_by(skus: { id: params[:sku] }) if params[:sku].present?
+    product = Product.joins(:skus).find_by(skus: { id: params[:sku] }) if params[:sku].present?
     product ||= Product.friendly.find(params[:id])
     if product
       current_cart.add_sku(product.code, params[:quantity].to_i, params[:sku])
