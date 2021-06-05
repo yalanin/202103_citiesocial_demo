@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :orders, except: %i[new edit update destroy] do
     delete :cancel, on: :member
     get :confirm, on: :collection
+    post :pay, on: :member
+    get :pay_confirm, on: :member
   end
 
   namespace :admin do

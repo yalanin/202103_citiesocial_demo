@@ -58,6 +58,32 @@ class OrdersController < ApplicationController
     end
   end
 
+  def pay
+    @order = current_user.orders.find(params[:id])
+    url = "#{ENV['line_pay_domain']}/v2/payments/request"
+    result = line_pay_request('pay', url)
+    if result['returnCode'] == '0000'
+      payment_url = result['info']['paymentUrl']['web']
+      redirect_to payment_url
+    else
+      flash[:alert] = result['returnMessage']
+      redirect_to order_path
+    end
+  end
+
+  def pay_confirm
+    @order = current_user.orders.find(params[:id])
+    url = "#{ENV['line_pay_domain']}/v2/payments/#{params[:transactionId]}/confirm"
+    result = line_pay_request('pay_confirm', url)
+    if result['returnCode'] == '0000'
+      transaction_id = result['info']['transactionId']
+      @order.pay!(transaction_id: transaction_id)
+      redirect_to orders_path, notice: '付款完成'
+    else
+      redirect_to orders_path, alert: "發生錯誤，錯誤訊息：#{result['returnCode']} #{result['returnMessage']}"
+    end
+  end
+
   private
 
   def add_order_items
@@ -97,6 +123,23 @@ class OrdersController < ApplicationController
   def confirm_params
     {
       amount: current_cart.total_price.to_i,
+      currency: 'TWD'
+    }.to_json
+  end
+
+  def pay_params
+    {
+      productName: 'Citiesocial Demo Pay Test',
+      amount: @order.total_price.to_i,
+      currency: 'TWD',
+      confirmUrl: "http://localhost:3000/orders/#{@order.id}/pay_confirm",
+      orderId: @order.order_number
+    }.to_json
+  end
+
+  def pay_confirm_params
+    {
+      amount: @order.total_price.to_i,
       currency: 'TWD'
     }.to_json
   end
