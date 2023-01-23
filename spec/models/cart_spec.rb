@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Cart, type: :model do
   let(:cart) { Cart.new }
+  let(:cart_with_items) { Cart.new(random_cart_hash) }
   # let(:vendor) { FactoryBot.build(:vendor) }
   # let(:category) { FactoryBot.build(:category) }
   let(:product) { create(:product, :with_skus) }
@@ -9,6 +10,11 @@ RSpec.describe Cart, type: :model do
   let(:product2) { create(:product, :with_skus, sell_price: 10) }
 
   describe '基本功能' do
+    it '檢測購物車是否為空' do
+      expect(cart.items).to be_empty
+      expect(cart_with_items.items).not_to be_empty
+    end
+
     it '商品丟進購物車' do
       cart.add_sku(2, 1)
       expect(cart).not_to be_empty
@@ -57,5 +63,10 @@ RSpec.describe Cart, type: :model do
         { 'product_id' => 2, 'quantity' => 2, 'sku_id' => 3 }
       ]
     }
+  end
+
+  def random_cart_hash
+    cart_item = { 'product_id' => [*1..20].sample, 'quantity' => [*1..3].sample, 'sku_id' => [*1..20].sample }
+    { 'items' => [cart_item] * [*1..5].sample }
   end
 end
