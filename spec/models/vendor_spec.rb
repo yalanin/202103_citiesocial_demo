@@ -1,4 +1,5 @@
 require 'rails_helper'
+require './spec/share/shared_examples_spec.rb'
 
 RSpec.describe Vendor, type: :model do
   describe 'validation' do
@@ -14,9 +15,7 @@ RSpec.describe Vendor, type: :model do
     let!(:vendor2) { create(:vendor, online: false) }
     subject { Vendor.all }
 
-    it '全部範圍' do
-      expect(subject.size).to eq(2)
-    end
+    include_examples 'full scope'
 
     it 'online only' do
       expect(subject.available.size).to eq(1)

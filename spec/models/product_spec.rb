@@ -1,4 +1,5 @@
 require 'rails_helper'
+require './spec/share/shared_examples_spec.rb'
 
 RSpec.describe Product, type: :model do
   describe 'scope test' do
@@ -6,9 +7,7 @@ RSpec.describe Product, type: :model do
     let!(:product2) { create(:product, on_sell: true) }
     subject { Product.all }
 
-    it '全部範圍' do
-      expect(subject.size).to eq(2)
-    end
+    include_examples 'full scope'
 
     it 'on sell only' do
       expect(subject.on_sell.size).to eq(1)
