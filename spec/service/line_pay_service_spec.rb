@@ -1,5 +1,4 @@
 require 'rails_helper'
-require './spec/share/shared_examples_spec.rb'
 
 RSpec.describe LinePayService, type: :class do
   let(:line_pay) { double() }

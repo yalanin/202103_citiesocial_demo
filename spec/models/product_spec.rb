@@ -1,5 +1,4 @@
 require 'rails_helper'
-require './spec/share/shared_examples_spec.rb'
 
 RSpec.describe Product, type: :model do
   context 'Scope Method' do
