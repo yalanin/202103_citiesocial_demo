@@ -23,18 +23,19 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Storage variant
 gem 'image_processing', '~> 1.2'
 
+gem 'aasm', '~> 5.2'
+gem 'acts_as_list', '~> 1.0', '>= 1.0.3'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 # gem 'devise', '~> 4.7', '>= 4.7.3'
 gem 'devise', github: 'heartcombo/devise', branch: 'ca-omniauth-2'
+gem 'faraday', '~> 1.4', '>= 1.4.1'
+gem 'figaro', '~> 1.2'
+gem 'friendly_id', '~> 5.4', '>= 5.4.2'
 gem 'omniauth-google-oauth2', '~> 0.8.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
-gem 'figaro', '~> 1.2'
 gem 'paranoia', '~> 2.4', '>= 2.4.3'
-gem 'friendly_id', '~> 5.4', '>= 5.4.2'
-gem 'acts_as_list', '~> 1.0', '>= 1.0.3'
-gem 'faraday', '~> 1.4', '>= 1.4.1'
-gem 'aasm', '~> 5.2'
+gem 'simplecov', require: false, group: :test
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
