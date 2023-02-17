@@ -43,6 +43,11 @@ RSpec.describe Cart, type: :model do
 
   context 'Class Method' do
     describe '進階功能' do
+      it '新增空購物車' do
+        reduction = Cart.from_hash
+        expect(reduction.items.size).to eq(0)
+      end
+
       it '將購物車功能存入 session' do
         3.times { cart.add_sku(product1.id, 1, 1) }
         2.times { cart.add_sku(product2.id, 1, 3) }

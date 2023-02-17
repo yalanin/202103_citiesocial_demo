@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
-  let(:product) { create(:product, :with_skus, sell_price: 15) }
+  # let(:product) { create(:product, :with_skus, sell_price: 15) }
   let(:order) { create(:order) }
-  let(:order1) { create(:order, :with_order_items, product: product) }
+  # let(:order1) { create(:order, :with_order_items, product: product) }
 
   context 'Instance Method' do
+    include_context 'share order'
     describe '#total_price' do
       it '計算訂單金額' do
         expect(order1.total_price.to_i).to eq(90)
