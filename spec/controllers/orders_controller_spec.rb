@@ -7,6 +7,10 @@ RSpec.describe OrdersController, type: :controller do
   let(:order_item) { create(:order_item, product: product, quantity: 12) }
   let(:order) { create(:order, :with_order_items, product: product, user: user) }
   let(:service) { LinePayService.new(order) }
+  before do
+    cart.add_sku(product.id, 2, product.skus.first.id)
+    controller.session[:cart_9876] = cart.serialize
+  end
   login_user
 
   describe '#index' do
@@ -17,28 +21,22 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe '#create' do
-    it '建立清單' do
-      VCR.use_cassette "data_search" do
-        cart.add_sku(product.id, 2, product.skus.first.id)
-        controller.session[:cart_9876] = cart.serialize
-        allow(service).to receive(:line_pay_request).and_return(pay_success)
-        result = service.pay_now
-        post :create, params: { order: { recipient: order.recipient, tel: order.tel, address: order.address, note: '' } }
-        expect(response).to redirect_to(checkout_cart_path)
-      end
+    it '導向付款頁面' do
+      allow_any_instance_of(LinePayService).to receive(:payment_url).and_return('https://linepay_url')
+      allow_any_instance_of(LinePayService).to receive(:pay_now).and_return(true)
+      post :create, params: { order: { recipient: order.recipient, tel: order.tel, address: order.address, note: '' } }
+      expect(response).to redirect_to('https://linepay_url')
     end
-  end
 
-  private
+    it '建立付款頁面失敗' do
+      allow_any_instance_of(LinePayService).to receive(:pay_now).and_return(false)
+      post :create, params: { order: { recipient: order.recipient, tel: order.tel, address: order.address, note: '' } }
+      expect(response).to redirect_to(checkout_cart_path)
+    end
 
-  def pay_success
-    {
-      'returnCode'=> '0000',
-      'info'=> {
-        'paymentUrl'=> {
-          'web'=> 'https://linepay_url'
-        }
-      }
-    }
+    it '建立訂單失敗' do
+      post :create, params: { order: { recipient: '', tel: '', address: '', note: '' } }
+      expect(response).to render_template('carts/checkout')
+    end
   end
 end
