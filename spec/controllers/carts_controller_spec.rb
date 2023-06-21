@@ -5,7 +5,6 @@ RSpec.describe CartsController, type: :controller do
   let(:order) { create(:order, user: user) }
   login_user
 
-
   describe '#destroy' do
     it '清空購物車' do
       delete :destroy
